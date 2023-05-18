@@ -4,11 +4,19 @@ on:
     branches:
       - main  
   workflow_dispatch:
+    inputs:
+      job:
+        description: 'Job to run'
+        required: true
+        default: 'build'
+        options:
+          - 'build'
+          - 'test'
 
 jobs:
   build:
     name: Build
-    if: github.event_name != 'workflow_dispatch' || github.event.inputs.job == 'build'
+#     if: github.event_name != 'workflow_dispatch' || github.event.inputs.job == 'build'
     runs-on: ubuntu-latest
 
     steps:
@@ -38,9 +46,14 @@ jobs:
         with:
           name: Build
           path: target/  
+          
+      - name: Set Build Status
+        id: build-status
+        run: echo "::set-output name=status::success"
+        
   test:
     name: Test
-    if: github.event_name != 'workflow_dispatch' || github.event.inputs.job == 'test'
+#     if: github.event_name != 'workflow_dispatch' || github.event.inputs.job == 'test'
     needs: build
     runs-on: ubuntu-latest
 
@@ -63,4 +76,22 @@ jobs:
           job-status: 'success'
           
       - name: Run Tests with Maven
-        run: mvn test    
+        run: mvn test 
+        
+      - name: Set Test Status
+        id: test-status
+        run: echo "::set-output name=status::success"
+        
+  check-status:
+    name: Check Job Status
+    needs: [build, test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Build Status
+        if: needs.build.outputs.status == 'success'
+        run: echo "Build successful"
+
+      - name: Check Test Status
+        if: needs.test.outputs.status == 'success'
+        run: echo "Tests successful"
