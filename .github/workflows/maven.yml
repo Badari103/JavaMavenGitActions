@@ -17,6 +17,8 @@ jobs:
   build:
     name: Build
 #     if: github.event_name != 'workflow_dispatch' || github.event.inputs.job == 'build'
+    needs: check-status
+    if: ${{ github.event.inputs.job == 'build' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -54,7 +56,8 @@ jobs:
   test:
     name: Test
 #     if: github.event_name != 'workflow_dispatch' || github.event.inputs.job == 'test'
-    needs: build
+    needs: check-status
+    if: ${{ github.event.inputs.job == 'test' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -84,14 +87,15 @@ jobs:
         
   check-status:
     name: Check Job Status
-    needs: [build, test]
     runs-on: ubuntu-latest
+    outputs:
+      job: ${{ github.event.inputs.job }}
 
-    steps:
-      - name: Check Build Status
-        if: needs.build.outputs.status == 'success'
-        run: echo "Build successful"
+#     steps:
+#       - name: Check Build Status
+#         if: needs.build.outputs.status == 'success'
+#         run: echo "Build successful"
 
-      - name: Check Test Status
-        if: needs.test.outputs.status == 'success'
-        run: echo "Tests successful"
+#       - name: Check Test Status
+#         if: needs.test.outputs.status == 'success'
+#         run: echo "Tests successful"
