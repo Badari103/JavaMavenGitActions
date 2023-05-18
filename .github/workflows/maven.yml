@@ -5,13 +5,16 @@ on:
       - main  
   workflow_dispatch:
     inputs:
-      job:
-        description: 'Job to run'
-        required: false
-        default: 'build'
-        options:
-          - 'build'
-          - 'test'
+      branch:
+        description: 'The branch to build'
+        required: true
+#       job:
+#         description: 'Job to run'
+#         required: false
+#         default: 'build'
+#         options:
+#           - 'build'
+#           - 'test'
 
 jobs:
   build:
