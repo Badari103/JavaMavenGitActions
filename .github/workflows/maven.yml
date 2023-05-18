@@ -54,7 +54,7 @@ jobs:
   test:
     name: Test
 #     if: github.event_name != 'workflow_dispatch' || github.event.inputs.job == 'test'
-    needs: build
+#     needs: build
     runs-on: ubuntu-latest
 
     steps:
