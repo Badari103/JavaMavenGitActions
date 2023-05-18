@@ -36,3 +36,11 @@ jobs:
         with:
           name: Build
           path: target/  
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
