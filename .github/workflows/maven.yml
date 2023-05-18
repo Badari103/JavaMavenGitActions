@@ -1,13 +1,14 @@
 name: Build Maven Project
 on:
-  workflow_dispatch:
   push:
     branches:
       - main  
+  workflow_dispatch:
 
 jobs:
   build:
     name: Build
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.job == 'build'
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +40,7 @@ jobs:
           path: target/  
   test:
     name: Test
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.job == 'test'
     needs: build
     runs-on: ubuntu-latest
 
