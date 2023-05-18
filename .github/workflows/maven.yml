@@ -5,23 +5,20 @@ on:
       - main  
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'The branch to build'
-        required: true
-#       job:
-#         description: 'Job to run'
-#         required: false
-#         default: 'build'
-#         options:
-#           - 'build'
-#           - 'test'
+      job:
+        description: 'Job to run'
+        required: false
+        default: 'build'
+        options:
+          - 'build'
+          - 'test'
 
 jobs:
   build:
     name: Build
 #     if: github.event_name != 'workflow_dispatch' || github.event.inputs.job == 'build'
 #     needs: check-status
-    if: ${{github.event_name == 'push' && github.event.inputs.job == 'build' }}
+    if: ${{github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'build') }}
     runs-on: ubuntu-latest
 
     steps:
@@ -60,7 +57,7 @@ jobs:
     name: Test
 #     if: github.event_name != 'workflow_dispatch' || github.event.inputs.job == 'test'
 #     needs: check-status
-    if: ${{github.event_name == 'push' && github.event.inputs.job == 'test' }}
+    if: ${{github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'test') }}
     runs-on: ubuntu-latest
 
     steps:
