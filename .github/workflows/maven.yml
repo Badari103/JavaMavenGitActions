@@ -44,17 +44,23 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
         
-      - name: Create Target Directory
-        run: mkdir -p target
+#       - name: Create Target Directory
+#         run: mkdir -p target
         
-      - name: Create Artifacts Directory
-        run: mkdir artifacts
+#       - name: Create Artifacts Directory
+#         run: mkdir artifacts
 
-      - name: Copy Target Directory
-        run: cp -R target artifacts/
+#       - name: Copy Target Directory
+#         run: cp -R target artifacts/
 
-      - name: View Artifacts
-        run: ls artifacts/
+#       - name: View Artifacts
+#         run: ls artifacts/
+
+      - name: Archive build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifact
+          path: target/your-artifact.jar
         
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
@@ -128,8 +134,11 @@ jobs:
 #       - name: Deploy to Netlify
 #         run: netlify deploy --prod --dir= "target/*.jar" --site=${{ steps.get_site_id.outputs.site_id }} --auth=${{secrets.NETLIFY_API_TOKEN}}
         
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Download build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+          path: target
 
       - name: Deploy to Netlify
         env:
