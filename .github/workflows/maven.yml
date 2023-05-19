@@ -98,25 +98,36 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
         
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Adjust the Node.js version if needed
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
 
       - name: Deploy to Netlify
-        env:
-          NETLIFY_ACCESS_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
-          NETLIFY_SITE_NAME: 'java-maven-project'
-        run: |
-          curl -X POST "https://api.netlify.com/api/v1/sites" \
-            -H "Authorization: Bearer $NETLIFY_ACCESS_TOKEN" \
-            -d '{
-              "name": "'"$NETLIFY_SITE_NAME"'",
-              "repo": "Badari103 /JavaMavenGitActions",
-              "repoPath": "target/your-artifact.jar",
-              "buildSettings": {
-                "command": "mvn clean install",
-                "publish": "target"
-              }
-            }'
+        run: netlify deploy --prod --dir=target/ --auth=$NETLIFY_AUTH_TOKEN
+        
+#       - name: Build with Maven
+#         run: mvn clean install
+
+#       - name: Deploy to Netlify
+#         env:
+#           NETLIFY_ACCESS_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
+#           NETLIFY_SITE_NAME: 'java-maven-project'
+#         run: |
+#           curl -X POST "https://api.netlify.com/api/v1/sites" \
+#             -H "Authorization: Bearer $NETLIFY_ACCESS_TOKEN" \
+#             -d '{
+#               "name": "'"$NETLIFY_SITE_NAME"'",
+#               "repo": "Badari103 /JavaMavenGitActions",
+#               "repoPath": "target/your-artifact.jar",
+#               "buildSettings": {
+#                 "command": "mvn clean install",
+#                 "publish": "target"
+#               }
+#             }'
         
 #   check-status:
 #     name: Check Job Status
