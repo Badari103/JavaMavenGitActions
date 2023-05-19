@@ -107,7 +107,7 @@ jobs:
         run: npm install -g netlify-cli
 
       - name: Deploy to Netlify
-        run: netlify deploy --prod --dir=target/ --auth=$NETLIFY_AUTH_TOKEN
+        run: netlify deploy --prod --dir=target/ --auth=$NETLIFY_API_TOKEN
         
 #       - name: Build with Maven
 #         run: mvn clean install
