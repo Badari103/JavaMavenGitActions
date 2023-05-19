@@ -7,7 +7,7 @@ on:
     inputs:
       job:
         description: 'Job to run'
-        required: false
+        required: false  
         default: 'build'
         options:
           - 'build'
