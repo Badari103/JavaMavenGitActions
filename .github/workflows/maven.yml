@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build-artifact
-          path: target/your-artifact.jar
+          path: target/stringLength.jar
         
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
