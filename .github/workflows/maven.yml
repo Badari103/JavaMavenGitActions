@@ -84,6 +84,21 @@ jobs:
       - name: Set Test Status
         id: test-status
         run: echo "::set-output name=status::success"
+  deploy:
+    name: Deploy to Heroku
+    needs: test  
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: my-maven-project
+          heroku_email: badarinarayan2001@gmail.com
         
 #   check-status:
 #     name: Check Job Status
