@@ -47,8 +47,14 @@ jobs:
       - name: Create Target Directory
         run: mkdir -p target
         
-      - name: Copy Artifacts
-        run: cp -R target /path/to/artifacts
+      - name: Create Artifacts Directory
+        run: mkdir artifacts
+
+      - name: Copy Target Directory
+        run: cp -R target artifacts/
+
+      - name: View Artifacts
+        run: ls artifacts/
         
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
@@ -101,36 +107,36 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
         
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'  # Adjust the Node.js version if needed
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: '14'  # Adjust the Node.js version if needed
 
-      - name: Install Netlify CLI
-        run: npm install -g netlify-cli
-
-      - name: Deploy to Netlify
-        run: netlify deploy --prod --dir=/path/to/artifacts --auth=$NETLIFY_API_TOKEN
-        
-#       - name: Build with Maven
-#         run: mvn clean install
+#       - name: Install Netlify CLI
+#         run: npm install -g netlify-cli
 
 #       - name: Deploy to Netlify
-#         env:
-#           NETLIFY_ACCESS_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
-#           NETLIFY_SITE_NAME: 'java-maven-project'
-#         run: |
-#           curl -X POST "https://api.netlify.com/api/v1/sites" \
-#             -H "Authorization: Bearer $NETLIFY_ACCESS_TOKEN" \
-#             -d '{
-#               "name": "'"$NETLIFY_SITE_NAME"'",
-#               "repo": "Badari103 /JavaMavenGitActions",
-#               "repoPath": "target/your-artifact.jar",
-#               "buildSettings": {
-#                 "command": "mvn clean install",
-#                 "publish": "target"
-#               }
-#             }'
+#         run: netlify deploy --prod --dir=/path/to/artifacts --auth=$NETLIFY_API_TOKEN
+        
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Deploy to Netlify
+        env:
+          NETLIFY_ACCESS_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
+          NETLIFY_SITE_NAME: 'java-maven-project'
+        run: |
+          curl -X POST "https://api.netlify.com/api/v1/sites" \
+            -H "Authorization: Bearer $NETLIFY_ACCESS_TOKEN" \
+            -d '{
+              "name": "'"$NETLIFY_SITE_NAME"'",
+              "repo": "Badari103 /JavaMavenGitActions",
+              "repoPath": "target/your-artifact.jar",
+              "buildSettings": {
+                "command": "mvn clean install",
+                "publish": "target"
+              }
+            }'
         
 #   check-status:
 #     name: Check Job Status
