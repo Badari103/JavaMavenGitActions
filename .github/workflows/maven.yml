@@ -90,7 +90,7 @@ jobs:
         run: echo "::set-output name=status::success"
   deploy:
     name: Deploy to Netlify
-    needs: test
+    needs: [build,test]
     if: ${{github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'deploy') }}
     runs-on: ubuntu-latest
 
