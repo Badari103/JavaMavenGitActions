@@ -118,7 +118,8 @@ jobs:
       - name: Get Netlify Site ID
         id: get_site_id
         run: |
-          NETLIFY_SITE_ID=$(npx netlify sites:list --json | jq -r '.[] | select(.name == "your-site-name") | .site_id')
+          NETLIFY_SITE_NAME="java-maven-project"
+          NETLIFY_SITE_ID=$(npx netlify sites:list --json | jq -r '.[] | select(.name == $NETLIFY_SITE_NAME) | .site_id')
           if [ -z "$NETLIFY_SITE_ID" ]; then
             NETLIFY_SITE_ID=$(npx netlify sites:create --json | jq -r '.site_id')
           fi
