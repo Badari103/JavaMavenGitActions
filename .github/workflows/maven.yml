@@ -141,7 +141,7 @@ jobs:
             -d '{
               "name": "'"$NETLIFY_SITE_NAME"'",
               "repo": "Badari103 /JavaMavenGitActions",
-              "repoPath": "target/your-artifact.jar",
+              "repoPath": "target",
               "buildSettings": {
                 "command": "mvn clean install",
                 "publish": "target"
