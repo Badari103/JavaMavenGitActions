@@ -125,7 +125,7 @@ jobs:
           echo "::set-output name=site_id::$NETLIFY_SITE_ID"
 
       - name: Deploy to Netlify
-        run: netlify deploy --prod --dir= "target/*.jar" --auth=${{secrets.NETLIFY_API_TOKEN}}
+        run: netlify deploy --prod --dir= "target/*.jar" --site=${{ steps.get_site_id.outputs.site_id }} --auth=${{secrets.NETLIFY_API_TOKEN}}
         
 #       - name: Build with Maven
 #         run: mvn clean install
