@@ -62,11 +62,11 @@ jobs:
           name: build-artifact
           path: target/stringLength.jar
         
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: Build
-          path: target/  
+#       - name: Upload Build Artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: Build
+#           path: target/  
           
       - name: Set Build Status
         id: build-status
