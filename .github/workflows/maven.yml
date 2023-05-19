@@ -47,6 +47,9 @@ jobs:
       - name: Create Target Directory
         run: mkdir -p target
         
+      - name: Copy Artifacts
+        run: cp -R target /path/to/artifacts
+        
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -107,7 +110,7 @@ jobs:
         run: npm install -g netlify-cli
 
       - name: Deploy to Netlify
-        run: netlify deploy --prod --dir=target/ --auth=$NETLIFY_API_TOKEN
+        run: netlify deploy --prod --dir=/path/to/artifacts --auth=$NETLIFY_API_TOKEN
         
 #       - name: Build with Maven
 #         run: mvn clean install
