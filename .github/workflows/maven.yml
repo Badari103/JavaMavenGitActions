@@ -114,6 +114,15 @@ jobs:
 
       - name: Install Netlify CLI
         run: npm install -g netlify-cli
+        
+      - name: Get Netlify Site ID
+        id: get_site_id
+        run: |
+          NETLIFY_SITE_ID=$(npx netlify sites:list --json | jq -r '.[] | select(.name == "your-site-name") | .site_id')
+          if [ -z "$NETLIFY_SITE_ID" ]; then
+            NETLIFY_SITE_ID=$(npx netlify sites:create --json | jq -r '.site_id')
+          fi
+          echo "::set-output name=site_id::$NETLIFY_SITE_ID"
 
       - name: Deploy to Netlify
         run: netlify deploy --prod --dir= "target/*.jar" --auth=${{secrets.NETLIFY_API_TOKEN}}
